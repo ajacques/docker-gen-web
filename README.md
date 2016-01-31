@@ -37,7 +37,7 @@ docker-gen:
   cpu_shares: 8
   volumes:
     - /var/run/docker.sock:/tmp/docker.sock:ro
-    - /etc/nginx/sites-enabled:/etc/nginx/sites-enable
+    - /etc/nginx:/etc/nginx
   stdin_open: false
   net: none
   mem_limit: 16777216
