@@ -51,7 +51,13 @@ upstream {{ $host }} {
 
 {{ $gen_serv_block := or (first (groupByKeys $containers "Env.GENERATE_SERVER_BLOCK")) "false" }}
 
+{{ $custom_config_definition := or (first (groupByKeys $containers "Env.CUSTOM_CONFIG_NAME")) "" }}
+
 {{ $max_upload_size := or (first (groupByKeys $containers "Env.HTTP_MAX_CLIENT_REQUEST_SIZE")) "default" }}
+
+{{ if (ne $custom_config_definition "") }}
+include /etc/nginx/sites-available/{{ $custom_config_definition }};
+{{ end }}
 
 {{ if (ne $gen_serv_block "false") }}
 
@@ -94,7 +100,6 @@ server {
         ssl_prefer_server_ciphers on;
         ssl_session_timeout 5m;
         ssl_session_cache shared:SSL:10m;
-
 
         {{ if (ne $max_upload_size "default")}}client_max_body_size {{ $max_upload_size }};{{ end }}
 
