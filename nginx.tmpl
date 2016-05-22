@@ -22,7 +22,7 @@ log_format vhost '$host $remote_addr - $remote_user [$time_local] '
 
 {{ range $host, $containers := groupByMulti $ "Env.VIRTUAL_HOST" "," }}
 
-upstream {{ $host }} {
+upstream {{ $host }}-upstream {
 {{ range $index, $value := $containers }}
     {{ $addrLen := len $value.Addresses }}
     {{ $network := index $value.Networks 0 }}
@@ -122,7 +122,7 @@ server {
 
     location / {
 {{ if (eq $proxy_type "http") }}
-        proxy_pass {{ $proto }}://{{ $host }};
+        proxy_pass {{ $proto }}://{{ $host }}-upstream;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
@@ -130,6 +130,7 @@ server {
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection $http_connection;
         proxy_set_header HTTPS on;
+        proxy_set_header Host $http_host;
 {{ else }}
         include fastcgi_params;
         fastcgi_pass $host;
@@ -159,11 +160,12 @@ server {
 
     location / {
 {{ if (eq $proxy_type "http") }}
-        proxy_pass {{ $proto }}://{{ $host }};
+        proxy_pass {{ $proto }}://{{ $host }}-upstream;
 {{ else }}
         include fastcgi_params;
         fastcgi_pass $host;
 {{ end }}
+        proxy_set_header Host $http_host;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection $http_connection;
         proxy_cache docker_cache;
