@@ -22,7 +22,7 @@ log_format vhost '$host $remote_addr - $remote_user [$time_local] '
 
 {{ range $host, $containers := groupByMulti $ "Env.VIRTUAL_HOST" "," }}
 
-upstream {{ $host }}-upstream {
+upstream {{ $host }} {
 {{ range $index, $value := $containers }}
     {{ $addrLen := len $value.Addresses }}
     {{ $network := index $value.Networks 0 }}
