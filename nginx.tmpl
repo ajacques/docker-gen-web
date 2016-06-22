@@ -139,7 +139,7 @@ server {
         proxy_set_header Host $http_host;
 {{ else }}
         include fastcgi_params;
-        fastcgi_pass $host;
+        fastcgi_pass {{ $host }};
 {{ end }}
         proxy_cache docker_cache;
         proxy_cache_use_stale error timeout http_500 http_502 http_503 http_504;
@@ -181,7 +181,7 @@ server {
         proxy_set_header Connection $http_connection;
 {{ else }}
         include fastcgi_params;
-        fastcgi_pass $host;
+        fastcgi_pass {{ $host }};
 {{ end }}
         proxy_cache docker_cache;
         proxy_cache_use_stale error timeout http_500 http_502 http_503 http_504;
