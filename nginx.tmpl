@@ -61,7 +61,7 @@ upstream {{ $host }} {
 
 {{ $max_upload_size := or (first (groupByKeys $containers "Env.HTTP_MAX_CLIENT_REQUEST_SIZE")) "default" }}
 
-{{ if (ne $custom_config_definition "") }}
+{{ if (and (ne $custom_config_definition "") (exists (printf "/etc/nginx/sites-available/%s" $custom_config_definition))) }}
 include /etc/nginx/sites-available/{{ $custom_config_definition }};
 {{ end }}
 
