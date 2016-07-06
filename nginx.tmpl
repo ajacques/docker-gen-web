@@ -123,7 +123,7 @@ server {
     location /.well-known/acme-challenge {
         rewrite ^/.well-known/acme-challenge/(.*)$ /acme-challenge-responder/$1 break;
         proxy_set_header X-Original-Host $host;
-        proxy_pass https://certs.technowizardry.net;
+        proxy_pass http://certs.technowizardry.net;
     }
 
     location / {
