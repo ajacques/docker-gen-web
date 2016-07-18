@@ -33,7 +33,7 @@ docker-gen:
     - nginx
     - /etc/templates/nginx.tmpl
     - /etc/nginx/sites-enabled/docker.conf
-  image: docker-gen-web:1
+  image: ajacques/docker-gen-web:latest
   cpu_shares: 8
   volumes:
     - /var/run/docker.sock:/tmp/docker.sock:ro
