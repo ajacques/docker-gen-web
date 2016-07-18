@@ -60,7 +60,6 @@ upstream {{ $host }} {
 
 {{ $custom_config_definition := or (first (groupByKeys $containers "Env.CUSTOM_CONFIG_NAME")) "" }}
 
-{{ $max_upload_size := or (first (groupByKeys $containers "Env.HTTP_MAX_CLIENT_REQUEST_SIZE")) "default" }}
 
 {{ if (and (ne $custom_config_definition "") (exists (printf "/etc/nginx/sites-available/%s" $custom_config_definition))) }}
 include /etc/nginx/sites-available/{{ $custom_config_definition }};
@@ -108,6 +107,7 @@ server {
     ssl_session_timeout 5m;
     ssl_session_cache shared:SSL:10m;
 
+    {{ $max_upload_size := or (first (groupByKeys $containers "Env.HTTP_MAX_CLIENT_REQUEST_SIZE")) "default" }}
     {{ if (ne $max_upload_size "default")}}client_max_body_size {{ $max_upload_size }};{{ end }}
 
     ssl_certificate /etc/nginx/certs/{{ (printf "%s.pem" $cert) }};
