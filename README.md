@@ -53,3 +53,4 @@ A few different options are available for configuring web app containers
 | GENERATE_SERVER_BLOCK | No | false | true/false | Whether or not to generate server {} block in NGINX |
 | CERT_NAME | No | | example_com | Name of the certificate to use |
 | HTTP_MAX_CLIENT_REQUEST_SIZE | No | 1m | 500m | Maximum number of bytes clients can upload. See [NGINX docs](http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size)
+| FASTCGI_HOME_DIR | No | [$document_root](http://nginx.org/en/docs/http/ngx_http_core_module.html#var_document_root) | /var/www/html | This folder contains all of the FastCGI scripts. |
