@@ -50,6 +50,7 @@ A few different options are available for configuring web app containers
 | --- | -------- | ------- | ------- | ----------- |
 | VIRTUAL_HOST | Yes | | example.com | The domain name to forward to this container |
 | VIRTUAL_PORT | No | Exposed port on container | 3000 | Port inside the container to forward to |
+| PROXY_PROTO | No | http | http,fastcgi | Specifies how traffic will be proxied to the upstream (FastCGI or HTTP)
 | GENERATE_SERVER_BLOCK | No | false | true/false | Whether or not to generate server {} block in NGINX |
 | CERT_NAME | No | | example_com | Name of the certificate to use |
 | HTTP_MAX_CLIENT_REQUEST_SIZE | No | 1m | 500m | Maximum number of bytes clients can upload. See [NGINX docs](http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size)
