@@ -148,6 +148,7 @@ server {
         proxy_hide_header X-Runtime;
 {{ else }}
         include fastcgi_params;
+        fastcgi_index index.php;
         {{ $fastcgi_home_dir := or (first (groupByKeys $containers "Env.FASTCGI_HOME_DIR")) "default" }}
         {{ if (ne $fastcgi_home_dir "default") }}
         fastcgi_param SCRIPT_FILENAME {{ $fastcgi_home_dir }}/$fastcgi_script_name;
