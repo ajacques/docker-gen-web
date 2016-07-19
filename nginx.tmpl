@@ -150,7 +150,7 @@ server {
         include fastcgi_params;
         {{ $fastcgi_home_dir := or (first (groupByKeys $containers "Env.FASTCGI_HOME_DIR")) "default" }}
         {{ if (ne $fastcgi_home_dir "default") }}
-        fastcgi_param SCRIPT_FILENAME {{ $fastcgi_home_dir }}/$fastcgi_script_nam;
+        fastcgi_param SCRIPT_FILENAME {{ $fastcgi_home_dir }}/$fastcgi_script_name;
         fastcgi_param HOME {{ $fastcgi_home_dir }};
         {{ end }}
         fastcgi_pass {{ $host }};
