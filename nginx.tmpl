@@ -85,6 +85,8 @@ include /etc/nginx/sites-available/{{ $custom_config_definition }};
 
 {{ $proxy_type := or (first (groupByKeys $containers "Env.PROXY_PROTO")) "http" }}
 
+{{ $enable_security_headers := or (first (groupByKeys $containers "Env.ENABLE_SECURITY_HEADERS")) "true" }}
+
 {{ if (and (ne $cert "") (exists (printf "/etc/nginx/certs/%s.pem" $cert))) }}
 
 server {
@@ -121,9 +123,11 @@ server {
     ssl_certificate /etc/nginx/certs/{{ (printf "%s.pem" $cert) }};
     ssl_certificate_key /etc/nginx/certs/{{ (printf "%s.pem" $cert) }};
 
+    {{ if (eq $enable_security_headers "true") }}
     add_header Strict-Transport-Security "max-age=63072000; preload";
     add_header X-Frame-Options DENY;
     add_header X-Content-Type-Options nosniff;
+    {{ end }}
 
     location /.well-known/acme-challenge {
       rewrite ^/.well-known/acme-challenge/(.*)$ /acme-challenge-responder/$1 break;
@@ -150,8 +154,10 @@ server {
         proxy_next_upstream_tries 2;
         proxy_connect_timeout 5;
         proxy_http_version 1.1;
+        {{ if (ne $enable_security_headers "true") }}
         proxy_hide_header X-Content-Type-Options;
         proxy_hide_header X-Frame-Options;
+        {{ end }}
         proxy_hide_header X-Request-Id;
         proxy_hide_header X-Runtime;
 {{ else }}
