@@ -40,7 +40,7 @@ upstream {{ $host }} {
         {{ if contains $value.Labels "io.rancher.container.ip" }}
             {{ $addr := index (split (index $value.Labels "io.rancher.container.ip") "/") 0 }}
             # {{$value.Name}}
-            server {{ $addr }}:{{ $value.Env.VIRTUAL_PORT }}
+            server {{ $addr }}:{{ $value.Env.VIRTUAL_PORT }};
         {{ else }}
             {{ range $i, $address := $value.Addresses }}
                 {{ if eq $address.Port $value.Env.VIRTUAL_PORT }}
