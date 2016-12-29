@@ -37,10 +37,16 @@ upstream {{ $host }} {
 
     {{/* If more than one port exposed, use the one matching VIRTUAL_PORT env var */}}
     {{ else if $value.Env.VIRTUAL_PORT }}
-        {{ range $i, $address := $value.Addresses }}
-            {{ if eq $address.Port $value.Env.VIRTUAL_PORT }}
-              # {{$value.Name}}
-              server {{ $network.IP }}:{{ $address.Port }};
+        {{ if contains $value.Labels "io.rancher.container.ip" }}
+            {{ $addr := index (split (index $value.Labels "io.rancher.container.ip") "/") 0 }}
+            # {{$value.Name}}
+            server {{ $addr }}:{{ $value.Env.VIRTUAL_PORT }}
+        {{ else }}
+            {{ range $i, $address := $value.Addresses }}
+                {{ if eq $address.Port $value.Env.VIRTUAL_PORT }}
+                # {{$value.Name}}
+                server {{ $network.IP }}:{{ $address.Port }};
+                {{ end }}
             {{ end }}
         {{ end }}
 
