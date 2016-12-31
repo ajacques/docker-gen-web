@@ -62,7 +62,7 @@ upstream {{ $host }} {
 {{ end }}
 }
 
-{{ $gen_serv_block := or (first (groupByKeys $containers "Env.GENERATE_SERVER_BLOCK")) "false" }}
+{{ $gen_serv_block := or (first (groupByKeys $containers "Env.GENERATE_SERVER_BLOCK")) "true" }}
 
 {{ $custom_config_definition := or (first (groupByKeys $containers "Env.CUSTOM_CONFIG_NAME")) "" }}
 
