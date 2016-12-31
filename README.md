@@ -25,7 +25,6 @@ docker-gen:
     - ALL
   labels:
     io.rancher.container.pull_image: always
-  tty: true
   command:
     - -watch
     - -only-exposed
