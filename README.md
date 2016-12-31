@@ -3,7 +3,15 @@ Docker-gen templates for web applications
 
 This is a basic Docker container that will automatically configure NGINX for web applications.
 
-## Running
+# Why?
+
+Instantly expose HTTP-based Docker containers to the public internet with an NGINX front-end proxy. Exposing a website is as easy as:
+
+```
+docker run -d -e VIRTUAL_HOST=example.com -t {your_app}
+```
+
+# Running
 The following config can be used to configure and run this instance:
 ### Docker Compose
 ```
@@ -32,7 +40,7 @@ docker-gen:
     - nginx
     - /etc/templates/nginx.tmpl
     - /etc/nginx/sites-enabled/docker.conf
-  image: ajacques/docker-gen-web:latest
+  image: ajacques/docker-gen-web:1.0
   cpu_shares: 8
   volumes:
     - /var/run/docker.sock:/tmp/docker.sock:ro
@@ -47,7 +55,7 @@ A few different options are available for configuring web app containers
 
 | Key | Required | Default | Example | Description |
 | --- | -------- | ------- | ------- | ----------- |
-| GENERATE_SERVER_BLOCK | No | true/false | True to generate a server {} block, false to only generate the upstream block. Generally you'll want true |
+| GENERATE_SERVER_BLOCK | Yes | true/false | True to generate a server {} block, false to only generate the upstream block. Generally you'll want true |
 | VIRTUAL_HOST | Yes | | example.com | The domain name to forward to this container |
 | VIRTUAL_PORT | No | Exposed port on container | 3000 | Port inside the container to forward to |
 | PROXY_PROTO | No | http | http,fastcgi | Specifies how traffic will be proxied to the upstream (FastCGI or HTTP)
